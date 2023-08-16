@@ -25,21 +25,56 @@ fn main() {
     println!("Hello, world!");
     let key = "iwrupvqb";
 
-    let num = "609043";
+    let mut counter: u64 = 0;
 
-    let input = String::from(key) + &String::from(num);
-    let digest = md5(&input);
+    // brute force
+    'run: loop {
 
-    println!("{}", digest);
+        let id = handle_id(counter);
+
+        let attempt = md5(&(String::from(key) + &id));
+
+        let mut result: u8 = 0;
+        for c in attempt[0..5].bytes() { 
+            if c == b'0' {
+                result += 1;
+            }
+        }
+        println!("{:04} => {} {:?} {}", counter, id, attempt, result);
+        if result == 5 {
+            println!("{}-{}", key, id);
+            break 'run
+        }
+        counter += 1;
+    }
 }
+
+fn handle_id(n: u64) -> String {
+    let mut s = String::new();
+    let bias = 10;
+
+    for i in 0..bias {
+        if n < 10_u64.pow(i) {
+            s = format!("{}", n);
+        }
+    }
+    s
+}
+
 
 #[cfg(test)]
 mod test {
     use crate::md5;
     #[test]
-    fn test_md5() {
+    fn test_md5_abcd() {
         let digest = md5(&"abcdef609043");
 
         assert!(digest == "000001dbbfa3a5c83a2d506429c7b00e");
+    }
+    #[test]
+    fn test_md5_pqrstuv() {
+        let digest = md5(&"pqrstuv1048970");
+
+        assert!(digest == "000006136ef2ff3b291c85725f17325c");
     }
 }

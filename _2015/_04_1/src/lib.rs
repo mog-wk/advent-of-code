@@ -31,7 +31,7 @@ pub fn md5(text: &str) -> String {
         bits.push(0b0000_0000);
     }
     bits.extend(split_u64_to_u8_array(text_len));
-    println!("{:?} {}", bits, text_len);
+    //println!("{:?} {}", bits, text_len);
 
     // 3. initialize Mword_d buffer
     let mut word_a: u32 = 0x67452301u32;
@@ -86,14 +86,13 @@ pub fn md5(text: &str) -> String {
         word_c = word_c.wrapping_add(word_cc);
         word_d = word_d.wrapping_add(word_dd);
     }
-    println!("{:.2?}", bench.elapsed());
+    //println!("{:.2?}", bench.elapsed());
     format!("{:08x}{:08x}{:08x}{:08x}", word_a.swap_bytes(), word_b.swap_bytes(), word_c.swap_bytes(), word_d.swap_bytes())
 }
 fn bit_padding(input: &str) -> Vec<u8> {
     let mut input_vector: Vec<u8> = input.bytes().collect();
     let bit_length: u64 = (input.len() as u64) * 8u64; // todo - add support for > 2^64 bit size
 
-    println!("{:?}", input_vector);
     // 128_u8 is the equivalent of padding 1 as an unsigned 8-bit integer
     // with lower-order bits first
     input_vector.push(128_u8);
