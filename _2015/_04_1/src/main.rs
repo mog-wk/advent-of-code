@@ -16,16 +16,29 @@ If your secret key is pqrstuv, the lowest number it combines with to make an MD5
 with five zeroes is 1048970; that is, the MD5 hash of pqrstuv1048970 looks like 000006136ef....
 
     key = "iwrupvqb";
+
+    => 346386
+    => 9958218
 */
 
 mod lib;
 use lib::md5;
 
+use std::time::Instant;
+
+// TODO make use of multiple threads for speeeed
+
 fn main() {
     println!("Hello, world!");
     let key = "iwrupvqb";
 
-    let mut counter: u64 = 0;
+    let mut counter: u64 = 30000;
+
+    let bench = Instant::now();
+
+    let zeros = 6_u8;
+
+    let mut fives = vec![];
 
     // brute force
     'run: loop {
@@ -35,30 +48,35 @@ fn main() {
         let attempt = md5(&(String::from(key) + &id));
 
         let mut result: u8 = 0;
-        for c in attempt[0..5].bytes() { 
+
+        for c in attempt[0..zeros as usize].bytes() { 
             if c == b'0' {
                 result += 1;
             }
         }
         println!("{:04} => {} {:?} {}", counter, id, attempt, result);
         if result == 5 {
+            fives.push(format!("{}: {}", id, attempt));
+            break 'run
+        } else if result == 6 {
             println!("{}-{}", key, id);
             break 'run
         }
         counter += 1;
     }
+
+    println!("{:?}", fives);
+    println!("{:.2?}", bench.elapsed());
 }
 
 fn handle_id(n: u64) -> String {
-    let mut s = String::new();
     let bias = 10;
-
     for i in 0..bias {
         if n < 10_u64.pow(i) {
-            s = format!("{}", n);
+            return format!("{}", n);
         }
     }
-    s
+    String::new()
 }
 
 
