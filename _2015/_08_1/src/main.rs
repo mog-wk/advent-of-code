@@ -14,7 +14,6 @@ fn main() {
     let mut code_cumulative: u32 = 0;
     let mut text_cumulative: u32 = 0;
 
-    //for line in input[..input.len()-1].into_iter() {
     for line in input[..input.len()-1].into_iter() {
         let mut code_counter: u32 = 2;
         let mut text_counter: u32 = 0;
