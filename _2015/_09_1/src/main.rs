@@ -22,7 +22,7 @@ fn main() {
     // part 1
     let mut data: Vec<(Vec<String>, u32)> = Vec::new();
     for label in graph.keys() {
-        data.push(nnh(&graph, Some(label)));
+        data.push(prim(&graph, Some(label)));
     }
     let mut min: u32 = 1000;
     for path in data.iter() {
@@ -36,7 +36,7 @@ fn main() {
     // part 2
     let mut data: Vec<(Vec<String>, u32)> = Vec::new();
     for label in graph.keys() {
-        data.push(nnh_inv(&graph, Some(label)));
+        data.push(prim_inv(&graph, Some(label)));
     }
     let mut max: u32 = 0;
     for path in data.iter() {
@@ -50,9 +50,8 @@ fn main() {
     
 }
 
-/// begins in a node and find the lower weight edge and procedes. Does not solve the problem made
-/// for personal study
-fn nnh(graph: &HashMap<&str, Vec<(&str, u32)>>, start_node: Option<&str>) -> (Vec<String>, u32) {
+// prim s algorithm for minimum spanning trees
+fn prim(graph: &HashMap<&str, Vec<(&str, u32)>>, start_node: Option<&str>) -> (Vec<String>, u32) {
     let mut node = start_node;
     let mut distance_travelled: u32 = 0;
     let mut path: Vec<String> = vec![String::from(start_node.unwrap())];
@@ -81,7 +80,7 @@ fn nnh(graph: &HashMap<&str, Vec<(&str, u32)>>, start_node: Option<&str>) -> (Ve
     (path[0..path.len() - 1].to_vec(), distance_travelled - 1000)
 }
 
-fn nnh_inv(graph: &HashMap<&str, Vec<(&str, u32)>>, start_node: Option<&str>) -> (Vec<String>, u32) {
+fn prim_inv(graph: &HashMap<&str, Vec<(&str, u32)>>, start_node: Option<&str>) -> (Vec<String>, u32) {
     let mut node = start_node;
     let mut distance_travelled: u32 = 0;
     let mut path: Vec<String> = vec![String::from(start_node.unwrap())];
