@@ -1,3 +1,3 @@
-# usage
+# Usage
 ---
-cargo r "day directory" -- "file.txt"
+cargo run --bin "day directory"

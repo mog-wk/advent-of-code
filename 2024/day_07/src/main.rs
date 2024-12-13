@@ -2,7 +2,7 @@ use std::ops::Div;
 
 fn main() {
     let input = std::fs::read_to_string("./day_07/src/input.txt").unwrap();
-    //let input = std::fs::read_to_string("./day_07/src/tests/default_01.txt").unwrap();
+    let input = std::fs::read_to_string("./day_07/src/tests/default_01.txt").unwrap();
 
     //println!("task 01: {}", task_01(&input));
     println!("task 02: {}", task_02(&input));
